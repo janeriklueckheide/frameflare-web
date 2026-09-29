@@ -9,6 +9,23 @@ const EASE_OUT_EXPO = [0.16, 1, 0.3, 1]
 // at a near-zero rate (browsers handle very small positive rates poorly).
 const MIN_PLAYBACK_RATE = 0.05
 
+// The video reaches a full stop once the page has scrolled this fraction of
+// the hero's height — i.e. roughly halfway through the section, not only
+// once it's fully out of view.
+const SCRUB_STOP_RATIO = 0.5
+
+// How quickly the smoothed scrub value chases the raw scroll target each
+// frame. Lower = silkier but laggier, higher = snappier but choppier.
+const SMOOTHING = 0.12
+
+// Ease-out-expo: velocity is highest immediately and tapers off toward the
+// end. Applied to the *slowdown* itself, this reads as "the video loses
+// speed fast the moment you start scrolling, then eases into the stop" —
+// the inverted-S feel that was requested instead of a linear ramp.
+function easeOutExpo(t) {
+  return t >= 1 ? 1 : 1 - 2 ** (-10 * t)
+}
+
 function Hero() {
   const sectionRef = useRef(null)
   const videoRef = useRef(null)
@@ -24,21 +41,29 @@ function Hero() {
   }, [])
 
   // Scroll-scrub the showreel: it plays at full speed at the top of the
-  // page, gradually slows as the hero scrolls out of view, and comes to a
-  // full stop (still frame) once the viewport has scrolled a full screen
-  // height. Scrolling back up smoothly speeds it back up again.
+  // page and eases into a full stop (still frame) by the time the viewport
+  // has scrolled half the hero's height. A smoothed value chases the raw
+  // scroll position every animation frame (rather than jumping straight to
+  // it), and an ease-out-expo curve is applied on top so the slowdown feels
+  // fast-then-gentle instead of linear. Scrolling back up reverses it.
   useEffect(() => {
     const section = sectionRef.current
     const video = videoRef.current
     if (!section || !video) return
 
-    let ticking = false
+    let rafId
+    let smoothProgress = 0
 
-    const update = () => {
-      ticking = false
-      const distance = section.offsetHeight || window.innerHeight
-      const progress = Math.min(Math.max(window.scrollY / distance, 0), 1)
-      const rate = 1 - progress
+    const tick = () => {
+      const distance = (section.offsetHeight || window.innerHeight) * SCRUB_STOP_RATIO
+      const targetProgress = Math.min(Math.max(window.scrollY / distance, 0), 1)
+
+      smoothProgress += (targetProgress - smoothProgress) * SMOOTHING
+      if (Math.abs(targetProgress - smoothProgress) < 0.0005) {
+        smoothProgress = targetProgress
+      }
+
+      const rate = 1 - easeOutExpo(smoothProgress)
 
       if (rate <= MIN_PLAYBACK_RATE) {
         if (!video.paused) video.pause()
@@ -46,17 +71,12 @@ function Hero() {
         video.playbackRate = rate
         if (video.paused) video.play().catch(() => {})
       }
+
+      rafId = window.requestAnimationFrame(tick)
     }
 
-    const onScroll = () => {
-      if (ticking) return
-      ticking = true
-      window.requestAnimationFrame(update)
-    }
-
-    update()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    rafId = window.requestAnimationFrame(tick)
+    return () => window.cancelAnimationFrame(rafId)
   }, [])
 
   return (
