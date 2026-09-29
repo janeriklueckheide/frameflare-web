@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
+import { useRef, useState } from 'react'
 
 const EASE_OUT_EXPO = [0.16, 1, 0.3, 1]
 
@@ -79,30 +80,45 @@ function Manifesto() {
 
       <div className="mt-24 lg:mt-32">
         {SERVICES.map((service, i) => (
-          <motion.div
-            key={service.index}
-            initial="hidden"
-            whileInView="visible"
-            whileHover="visible"
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ duration: 0.6, ease: EASE_OUT_EXPO, delay: i * 0.1 }}
-            variants={fadeUp}
-            className="group flex flex-col items-start border-b border-off-white/20 py-6 transition-colors duration-500 hover:border-off-white/70 sm:py-8"
-          >
-            <span className="font-sans text-lg text-off-white sm:text-2xl lg:text-3xl">
-              {service.index} / {service.label}
-            </span>
-            <motion.p
-              variants={descriptionReveal}
-              transition={{ duration: 0.35, ease: EASE_OUT_EXPO }}
-              className="max-w-xl overflow-hidden font-sans text-sm leading-relaxed text-off-white/60 sm:text-base"
-            >
-              {service.description}
-            </motion.p>
-          </motion.div>
+          <ServiceItem key={service.index} service={service} index={i} />
         ))}
       </div>
     </section>
+  )
+}
+
+function ServiceItem({ service, index }) {
+  const itemRef = useRef(null)
+  const isInView = useInView(itemRef, { amount: 0.5 })
+  const [isHovered, setIsHovered] = useState(false)
+  const isDescriptionVisible = isInView || isHovered
+
+  return (
+    <motion.div
+      ref={itemRef}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.6 }}
+      transition={{ duration: 0.6, ease: EASE_OUT_EXPO, delay: index * 0.1 }}
+      variants={fadeUp}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      className="group flex flex-col items-start border-b border-off-white/20 py-6 transition-colors duration-500 hover:border-off-white/70 sm:py-8"
+    >
+      <span className="font-sans text-lg text-off-white sm:text-2xl lg:text-3xl">
+        {service.index} / {service.label}
+      </span>
+      <motion.p
+        initial="hidden"
+        animate={isDescriptionVisible ? 'visible' : 'hidden'}
+        variants={descriptionReveal}
+        transition={{ duration: 0.35, ease: EASE_OUT_EXPO }}
+        aria-hidden={!isDescriptionVisible}
+        className="max-w-xl overflow-hidden font-sans text-sm leading-relaxed text-off-white/60 sm:text-base"
+      >
+        {service.description}
+      </motion.p>
+    </motion.div>
   )
 }
 

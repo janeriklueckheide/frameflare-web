@@ -10,7 +10,7 @@ const fadeUp = {
 // Placeholder targets — wire up to real profile/legal pages once available.
 const FOOTER_LINKS = [
   { label: 'LinkedIn', href: '#' },
-  { label: 'Impressum', href: '#' },
+  { label: 'Impressum', href: '/impressum/' },
   { label: 'Datenschutz', href: '#' },
 ]
 
