@@ -72,7 +72,7 @@ function Contact() {
         variants={fadeUp}
         className="flex flex-col gap-6 border-t border-off-white/10 pt-8 font-sans text-xs uppercase tracking-[0.2em] text-off-white/60 sm:flex-row sm:items-center sm:justify-between"
       >
-        <span>FRAMEFLARE WORKS &copy; 2026</span>
+        <span>FRAME FLARE WORKS &copy; 2026</span>
         <nav className="flex gap-6">
           {FOOTER_LINKS.map((link) => (
             <a

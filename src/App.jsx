@@ -29,7 +29,7 @@ function App() {
   }, [])
 
   return (
-    <main className="site-shell" aria-label="FRAMEFLARE">
+    <main className="site-shell" aria-label="FRAME FLARE WORKS">
       <Header />
       <Hero />
       <Manifesto />

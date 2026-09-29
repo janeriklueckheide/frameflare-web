@@ -14,7 +14,7 @@ function Header() {
         href="#hero"
         className="font-display text-sm uppercase tracking-[0.2em] text-off-white sm:text-base"
       >
-        Frame Flare
+        Frame Flare Works
       </a>
 
       <a

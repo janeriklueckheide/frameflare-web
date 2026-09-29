@@ -133,9 +133,9 @@ function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: EASE_OUT_EXPO, delay: 0.5 }}
-          className="font-sans text-xs uppercase tracking-[0.2em] text-off-white/70 sm:text-sm"
+          className="max-w-3xl font-sans text-sm leading-relaxed text-off-white/80 sm:text-lg"
         >
-          FRAMEFLARE WORKS | Edit &middot; Pace &middot; Motion
+          I transform existing footage into high-retention social content and cinematic brand assets.
         </motion.p>
 
         <motion.a
