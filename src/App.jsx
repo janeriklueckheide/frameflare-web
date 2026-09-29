@@ -3,15 +3,22 @@ import Lenis from '@studio-freight/lenis'
 import Header from './components/Header.jsx'
 import Hero from './components/Hero.jsx'
 import Impressum from './components/Impressum.jsx'
+import PrivacyPolicy from './components/PrivacyPolicy.jsx'
 import Manifesto from './components/Manifesto.jsx'
 import Work from './components/Work.jsx'
 import Contact from './components/Contact.jsx'
 
 function App() {
-  const isImpressum = window.location.pathname.replace(/\/+$/, '') === '/impressum'
+  const path = window.location.pathname.replace(/\/+$/, '')
+  const page = path === '/impressum'
+    ? 'impressum'
+    : path === '/datenschutz'
+      ? 'privacy'
+      : 'home'
+  const isLegalPage = page !== 'home'
 
   useEffect(() => {
-    if (isImpressum) return undefined
+    if (isLegalPage) return undefined
 
     const lenis = new Lenis({
       duration: 1.1,
@@ -31,24 +38,31 @@ function App() {
       window.cancelAnimationFrame(animationFrameId)
       lenis.destroy()
     }
-  }, [isImpressum])
+  }, [isLegalPage])
 
   useEffect(() => {
-    if (!isImpressum) return undefined
+    if (!isLegalPage) return undefined
 
     const previousTitle = document.title
     const previousLanguage = document.documentElement.lang
-    document.title = 'Impressum | FRAME FLARE WORKS'
+    document.title =
+      page === 'impressum'
+        ? 'Impressum | FRAME FLARE WORKS'
+        : 'Datenschutzerklärung | FRAME FLARE WORKS'
     document.documentElement.lang = 'de'
 
     return () => {
       document.title = previousTitle
       document.documentElement.lang = previousLanguage
     }
-  }, [isImpressum])
+  }, [isLegalPage, page])
 
-  if (isImpressum) {
+  if (page === 'impressum') {
     return <Impressum />
+  }
+
+  if (page === 'privacy') {
+    return <PrivacyPolicy />
   }
 
   return (

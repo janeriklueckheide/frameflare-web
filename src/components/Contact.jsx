@@ -7,11 +7,14 @@ const fadeUp = {
   visible: { opacity: 1, y: 0 },
 }
 
-// Placeholder targets — wire up to real profile/legal pages once available.
 const FOOTER_LINKS = [
-  { label: 'LinkedIn', href: '#' },
-  { label: 'Impressum', href: '/impressum/' },
-  { label: 'Datenschutz', href: '#' },
+  {
+    label: 'Instagram',
+    href: 'https://www.instagram.com/jel_editing/',
+    external: true,
+  },
+  { label: 'Imprint', href: '/impressum/' },
+  { label: 'Privacy Policy', href: '/datenschutz/' },
 ]
 
 function Contact() {
@@ -78,6 +81,8 @@ function Contact() {
             <a
               key={link.label}
               href={link.href}
+              target={link.external ? '_blank' : undefined}
+              rel={link.external ? 'noreferrer' : undefined}
               className="transition-colors duration-300 hover:text-off-white"
             >
               {link.label}
