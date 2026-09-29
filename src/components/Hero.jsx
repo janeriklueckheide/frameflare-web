@@ -9,21 +9,24 @@ const EASE_OUT_EXPO = [0.16, 1, 0.3, 1]
 // at a near-zero rate (browsers handle very small positive rates poorly).
 const MIN_PLAYBACK_RATE = 0.05
 
-// The video reaches a full stop once the page has scrolled this fraction of
-// the hero's height — i.e. roughly halfway through the section, not only
-// once it's fully out of view.
+// Playback speed multiplier reached once fully scrolled past the hero.
+const MAX_PLAYBACK_RATE = 3.5
+
+// The ramp-up finishes once the page has scrolled this fraction of the
+// hero's height — i.e. roughly halfway through the section, not only once
+// it's fully out of view.
 const SCRUB_STOP_RATIO = 0.5
 
 // How quickly the smoothed scrub value chases the raw scroll target each
 // frame. Lower = silkier but laggier, higher = snappier but choppier.
 const SMOOTHING = 0.12
 
-// Ease-out-expo: velocity is highest immediately and tapers off toward the
-// end. Applied to the *slowdown* itself, this reads as "the video loses
-// speed fast the moment you start scrolling, then eases into the stop" —
-// the inverted-S feel that was requested instead of a linear ramp.
-function easeOutExpo(t) {
-  return t >= 1 ? 1 : 1 - 2 ** (-10 * t)
+// Ease-in-expo: barely anything happens for the first ~2/3 of progress,
+// then it rockets up toward the end. Applied to the speed-up, this reads
+// as "scrolling further/faster makes the video race ahead" rather than a
+// linear ramp — the exponential feel that was requested.
+function easeInExpo(t) {
+  return t <= 0 ? 0 : 2 ** (10 * (t - 1))
 }
 
 function Hero() {
@@ -40,12 +43,13 @@ function Hero() {
     video.play().catch(() => {})
   }, [])
 
-  // Scroll-scrub the showreel: it plays at full speed at the top of the
-  // page and eases into a full stop (still frame) by the time the viewport
-  // has scrolled half the hero's height. A smoothed value chases the raw
-  // scroll position every animation frame (rather than jumping straight to
-  // it), and an ease-out-expo curve is applied on top so the slowdown feels
-  // fast-then-gentle instead of linear. Scrolling back up reverses it.
+  // Scroll-scrub the showreel: it plays at normal speed at the top of the
+  // page, and the further it's scrolled up out of view, the faster it
+  // plays — easing in exponentially, so the first two-thirds of the scroll
+  // barely changes the speed and it then races ahead toward the end. A
+  // smoothed value chases the raw scroll position every animation frame
+  // (rather than jumping straight to it) for a silky transition. Scrolling
+  // back down reverses it back to normal speed.
   useEffect(() => {
     const section = sectionRef.current
     const video = videoRef.current
@@ -63,7 +67,7 @@ function Hero() {
         smoothProgress = targetProgress
       }
 
-      const rate = 1 - easeOutExpo(smoothProgress)
+      const rate = 1 + (MAX_PLAYBACK_RATE - 1) * easeInExpo(smoothProgress)
 
       if (rate <= MIN_PLAYBACK_RATE) {
         if (!video.paused) video.pause()
