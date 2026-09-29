@@ -92,7 +92,7 @@ function Hero() {
       <video
         ref={videoRef}
         className="absolute inset-0 h-full w-full object-cover"
-        src="/content/showreel/FF_SHOWREEL_v2_horizontal.mp4"
+        src="/content/showreel/0FF_SHOWREEL_v2_grainy_horizontal.mp4"
         autoPlay
         muted
         loop

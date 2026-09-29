@@ -13,7 +13,7 @@ const PROJECTS = [
     title: 'The Hero Case',
     type: 'Editorial & Brand',
     date: '09/26',
-    video: '/content/showreel/FF_SHOWREEL_v2_horizontal.mp4',
+    video: '/content/showreel/0FF_SHOWREEL_v2_grainy_horizontal.mp4',
     scrub: 1.5,
   },
   {
@@ -21,7 +21,7 @@ const PROJECTS = [
     title: 'Kinetic Drop',
     type: 'Kinetic Social',
     date: '07/26',
-    video: '/content/showreel/FF_SHOWREEL_v2_horizontal.mp4',
+    video: '/content/showreel/0FF_SHOWREEL_v2_grainy_horizontal.mp4',
     scrub: 5,
   },
   {
@@ -29,7 +29,7 @@ const PROJECTS = [
     title: 'Structure in Motion',
     type: 'Motion Architecture',
     date: '05/26',
-    video: '/content/showreel/FF_SHOWREEL_v2_horizontal.mp4',
+    video: '/content/showreel/0FF_SHOWREEL_v2_grainy_horizontal.mp4',
     scrub: 9,
   },
 ]
