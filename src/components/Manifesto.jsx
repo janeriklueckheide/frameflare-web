@@ -1,5 +1,5 @@
-import { motion, useInView } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { motion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
 
 const EASE_OUT_EXPO = [0.16, 1, 0.3, 1]
 
@@ -89,9 +89,38 @@ function Manifesto() {
 
 function ServiceItem({ service, index }) {
   const itemRef = useRef(null)
-  const isInView = useInView(itemRef, { amount: 0.5 })
+  const [isInCenter, setIsInCenter] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
-  const isDescriptionVisible = isInView || isHovered
+  const isDescriptionVisible = isInCenter || isHovered
+
+  useEffect(() => {
+    const item = itemRef.current
+    if (!item) return undefined
+
+    let observer
+    const observeCenterBand = () => {
+      observer?.disconnect()
+      setIsInCenter(false)
+
+      const inset = Math.round(window.innerHeight * 0.45)
+      observer = new IntersectionObserver(
+        ([entry]) => setIsInCenter(entry.isIntersecting),
+        {
+          rootMargin: `-${inset}px 0px -${inset}px 0px`,
+          threshold: 0,
+        },
+      )
+      observer.observe(item)
+    }
+
+    observeCenterBand()
+    window.addEventListener('resize', observeCenterBand)
+
+    return () => {
+      observer?.disconnect()
+      window.removeEventListener('resize', observeCenterBand)
+    }
+  }, [])
 
   return (
     <motion.div
