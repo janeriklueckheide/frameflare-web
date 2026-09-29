@@ -28,6 +28,11 @@ const fadeUp = {
   visible: { opacity: 1, y: 0 },
 }
 
+const descriptionReveal = {
+  hidden: { opacity: 0, height: 0, paddingTop: 0 },
+  visible: { opacity: 1, height: 'auto', paddingTop: 12 },
+}
+
 function Manifesto() {
   return (
     <section
@@ -78,17 +83,22 @@ function Manifesto() {
             key={service.index}
             initial="hidden"
             whileInView="visible"
+            whileHover="visible"
             viewport={{ once: true, amount: 0.6 }}
             transition={{ duration: 0.6, ease: EASE_OUT_EXPO, delay: i * 0.1 }}
             variants={fadeUp}
-            className="group flex flex-col gap-3 border-b border-off-white/20 py-6 transition-colors duration-500 hover:border-off-white/70 sm:py-8 lg:flex-row lg:items-start lg:justify-between lg:gap-12"
+            className="group flex flex-col items-start border-b border-off-white/20 py-6 transition-colors duration-500 hover:border-off-white/70 sm:py-8"
           >
-            <span className="font-sans text-lg text-off-white transition-colors duration-500 group-hover:text-off-white sm:text-2xl lg:text-3xl">
+            <span className="font-sans text-lg text-off-white sm:text-2xl lg:text-3xl">
               {service.index} / {service.label}
             </span>
-            <p className="max-w-xl font-sans text-sm leading-relaxed text-off-white/60 sm:text-base lg:text-right">
+            <motion.p
+              variants={descriptionReveal}
+              transition={{ duration: 0.35, ease: EASE_OUT_EXPO }}
+              className="max-w-xl overflow-hidden font-sans text-sm leading-relaxed text-off-white/60 sm:text-base"
+            >
               {service.description}
-            </p>
+            </motion.p>
           </motion.div>
         ))}
       </div>
