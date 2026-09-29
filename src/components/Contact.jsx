@@ -57,11 +57,11 @@ function Contact() {
           </span>
 
           <a
-            href="mailto:hello@frameflare.works"
+            href="mailto:jan-erik.lueckheide@frameflare.works"
             className="group relative mx-auto block w-fit whitespace-nowrap font-sans font-medium text-off-white"
             style={{ fontSize: 'clamp(1rem, 3.4vw, 2.5rem)' }}
           >
-            hello@frameflare.works
+            jan-erik.lueckheide@frameflare.works
             <span className="absolute inset-x-0 -bottom-1 h-px origin-left scale-x-0 bg-off-white transition-transform duration-500 ease-out group-hover:scale-x-100" />
           </a>
         </motion.div>
