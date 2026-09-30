@@ -17,12 +17,12 @@ const PROJECTS = [
     scrub: 1.5,
   },
   {
-    id: 'kinetic-drop',
-    title: 'Kinetic Drop',
-    type: 'Kinetic Social',
-    date: '07/26',
-    video: '/content/showreel/0FF_SHOWREEL_v2_grainy_horizontal.mp4',
-    scrub: 5,
+    id: 'isar_spec',
+    title: 'MISSION: Upward ',
+    type: 'Spec Ad',
+    date: '09/26',
+    video: '/content/showreel/ISAR_Aeropsace_Spec_horizontal_lowqual.mp4',
+    scrub: 1.5,
   },
   {
     id: 'structure-in-motion',
