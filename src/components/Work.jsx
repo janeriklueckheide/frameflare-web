@@ -25,12 +25,12 @@ const PROJECTS = [
     scrub: 1.5,
   },
   {
-    id: 'structure-in-motion',
-    title: 'Structure in Motion',
-    type: 'Motion Architecture',
-    date: '05/26',
-    video: '/content/showreel/0FF_SHOWREEL_v2_grainy_horizontal.mp4',
-    scrub: 9,
+    id: 'mor_travel_edit',
+    title: 'Travel Morocco',
+    type: 'Travel Vlog',
+    date: '03/26',
+    video: '/content/showreel/Morooco_travel_edit_lowqual.mp4',
+    scrub: 2,
   },
 ]
 
