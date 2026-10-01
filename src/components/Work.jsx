@@ -32,6 +32,14 @@ const PROJECTS = [
     video: '/content/showreel/Morooco_travel_edit_lowqual.mp4',
     scrub: 2,
   },
+  {
+    id: 'figure_spec',
+    title: 'Figure Robotics',
+    type: 'Spec Ad',
+    date: '09/26',
+    video: '/content/showreel/Figure_SPEC_horizontal_lowqual.mp4',
+    scrub: 1.5,
+  },
 ]
 
 const fadeUp = {
